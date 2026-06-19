@@ -86,11 +86,15 @@ font-weight:600;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+grid-template-columns:repeat(3,1fr);
 gap:10px;
-align-items:center;
 }
-
+@media (max-width:768px){
+.grid{
+grid-template-columns:1fr;
+}
+}
+    
 .stats{
 display:grid;
 grid-template-columns:repeat(4,1fr);
@@ -186,25 +190,29 @@ margin:4px 0;
 <div class="card">
     <div class="grid">
 
-        <input id="nama" placeholder="Nama Karyawan">
+       <div class="grid">
 
-        <input id="pokok" placeholder="Gaji Pokok">
+    <input id="nama" placeholder="Nama Karyawan">
 
-        <input id="harian" placeholder="Gaji Harian">
+    <input id="pokok" placeholder="Gaji Pokok">
 
-        <input id="insentif" placeholder="Insentif Mingguan">
+    <input id="harian" placeholder="Gaji Harian">
 
-        <input id="bon" placeholder="Bon">
+    <input id="insentif" placeholder="Insentif Mingguan">
 
-        <select id="libur">
-            ...
-        </select>
+    <input id="bon" placeholder="Bon">
 
-        <select id="bulan"></select>
+    <select id="libur">
+        <option value="minggu">Minggu</option>
+        <option value="sabtu">Sabtu</option>
+        <option value="sabtu-minggu">Sabtu & Minggu</option>
+    </select>
 
-        <select id="tahun"></select>
+    <select id="bulan"></select>
 
-    </div>
+    <select id="tahun"></select>
+
+</div>
 </div>
 
 <!-- DASHBOARD -->
