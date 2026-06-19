@@ -84,22 +84,34 @@ cursor:pointer;
 font-weight:600;
 }  
 
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:10px;
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px;
+    align-items: start;
 }
-@media (max-width:768px){
-.grid{
-grid-template-columns:1fr;
+
+/* MOBILE */
+@media (max-width:768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
 }
+
+/* STATS (DESKTOP DEFAULT) */
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
-    
-.stats{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:10px;
+
+/* OPTIONAL: MOBILE STATS */
+@media (max-width:768px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
+
 
 .box{
 padding:15px;
@@ -201,6 +213,7 @@ margin:4px 0;
         <input id="bon" placeholder="Bon">
 
        <select id="libur">
+           
     <option value="minggu">Minggu</option>
     <option value="sabtu">Sabtu</option>
     <option value="sabtu-minggu">Sabtu & Minggu</option>
