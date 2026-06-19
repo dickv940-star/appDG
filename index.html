@@ -84,24 +84,25 @@ cursor:pointer;
 font-weight:600;
 }  
 
-.grid {
+.stats {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 12px;
-    align-items: start;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
 }
 
-/* MOBILE */
 @media (max-width:768px) {
     .grid {
         grid-template-columns: 1fr;
     }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
-/* STATS (DESKTOP DEFAULT) */
 .stats {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 10px;
 }
 
