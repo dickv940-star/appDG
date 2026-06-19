@@ -59,13 +59,17 @@ gap:12px;
 width:45px;
 height:45px;
 border-radius:10px;
-background:#d1d5db;
+overflow:hidden;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:12px;
-font-weight:700;
-color:#111;
+background:#fff;
+}
+
+.logo img{
+width:100%;
+height:100%;
+object-fit:cover;
 }
 
 .brand h2{
@@ -183,7 +187,9 @@ margin:4px 0;
 <div class="card header">
 
 <div class="brand">
-<div class="logo">LOGO</div>
+<div class="logo">
+    <img src="logo.png" alt="Logo AppDIGI">
+</div>
 <h2>AppDIGI</h2>
 </div>
 
