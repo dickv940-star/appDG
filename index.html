@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AppDIGI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+--bg:#eef2f7;
+--card:#fff;
+--text:#111827;
+--primary:#2563eb;
+--success:#16a34a;
+--danger:#dc2626;
+--warning:#facc15;
+--border:#d1d5db;
+}
+
+body.dark{
+--bg:#0f172a;
+--card:#1e293b;
+--text:#e2e8f0;
+--border:#334155;
+}
+
+*{box-sizing:border-box;font-family:Poppins;margin:0;padding:0}
+
+body{background:var(--bg);color:var(--text);padding:20px}
+
+.container{max-width:1200px;margin:auto}
+
+.card{
+background:var(--card);
+padding:18px;
+border-radius:16px;
+margin-bottom:15px;
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+
+/* HEADER FIX */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.brand{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo{
+width:45px;
+height:45px;
+border-radius:10px;
+background:#d1d5db;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:12px;
+font-weight:700;
+color:#111;
+}
+
+.brand h2{
+font-size:20px;
+}
+
+button{
+padding:10px 14px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+}
+
+.btn-primary{background:var(--primary);color:#fff}
+.btn-success{background:var(--success);color:#fff}
+.btn-dark{background:#111827;color:#fff}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+
+input,select{
+padding:10px;
+border-radius:10px;
+border:1px solid var(--border);
+background:var(--card);
+color:var(--text);
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+}
+
+.box{
+padding:15px;
+border-radius:12px;
+color:#fff;
+}
+
+.g{background:var(--success)}
+.y{background:var(--warning);color:#111}
+.r{background:var(--danger)}
+.b{background:var(--primary)}
+
+.days{
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:8px;
+margin-top:12px;
+}
+
+.headerDay{
+background:var(--primary);
+color:#fff;
+padding:10px;
+text-align:center;
+border-radius:10px;
+font-size:12px;
+font-weight:600;
+}
+
+.day{
+border:1px solid var(--border);
+padding:10px;
+border-radius:12px;
+min-height:70px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+cursor:pointer;
+transition:.15s;
+font-weight:600;
+}
+
+.day:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 15px rgba(0,0,0,.08);
+}
+
+.day small{
+font-size:11px;
+opacity:.7;
+margin-top:3px;
+}
+
+.masuk{background:#16a34a;color:#fff}
+.setengah{background:#facc15;color:#111}
+.alfa{background:#dc2626;color:#fff}
+.libur{background:#6b7280;color:#fff}
+
+.week-summary{
+grid-column:1/-1;
+background:rgba(0,0,0,0.04);
+padding:6px 10px;
+border-radius:10px;
+font-size:12px;
+margin:4px 0;
+}
+
+.empty{visibility:hidden}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- HEADER BARU -->
+<div class="card header">
+
+<div class="brand">
+<div class="logo">LOGO</div>
+<h2>AppDIGI</h2>
+</div>
+
+<div>
+<button class="btn-dark" onclick="document.body.classList.toggle('dark')">Dark</button>
+
+<button class="btn-success" onclick="backup()">Backup</button>
+
+<button class="btn-primary" onclick="document.getElementById('file').click()">Restore</button>
+
+<button class="btn-success" onclick="downloadPDF()">
+📄 PDF
+</button>
+
+<button class="btn-primary" onclick="downloadJPG()">
+🖼️ JPG
+</button>
+
+<input type="file" id="file" hidden>
+</div>
+
+</div>
+
+<!-- INPUT -->
+<div class="card">
+<div class="grid">
+
+<input id="nama" placeholder="Nama Karyawan">
+
+<input id="pokok" placeholder="Gaji Pokok">
+<input id="harian" placeholder="Gaji Harian">
+<input id="insentif" placeholder="Insentif Mingguan">
+<input id="bon" placeholder="Bon">
+
+<select id="libur">
+    <option value="minggu">Minggu</option>
+    <option value="sabtu">Sabtu</option>
+    <option value="sabtu-minggu">Sabtu & Minggu</option>
+</select>
+
+<select id="bulan"></select>
+<select id="tahun"></select>
+
+</div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="card">
+<div class="stats">
+<div class="box g">Hadir <h3 id="h">0</h3></div>
+<div class="box y">Setengah <h3 id="s">0</h3></div>
+<div class="box r">Alfa <h3 id="a">0</h3></div>
+<div class="box b">Total <h3 id="t">Rp 0</h3></div>
+</div>
+</div>
+
+<!-- CALENDAR -->
+<div class="card">
+<div id="cal"></div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+
+
+let data={};
+
+const bulan=document.getElementById("bulan");
+const tahun=document.getElementById("tahun");
+
+const m=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+
+m.forEach((b,i)=>bulan.innerHTML+=`<option value="${i}">${b}</option>`);
+for(let y=2025;y<=2035;y++)tahun.innerHTML+=`<option>${y}</option>`;
+
+/* KEY */
+function key(y,b,t){return y+"-"+b+"-"+t}
+
+/* FORMAT */
+function rp(n){
+return Number(n||0).toLocaleString("id-ID");
+}
+
+function num(v){
+return Number(String(v||"").replace(/\D/g,""))||0;
+}
+
+function formatInputRupiah(el){
+
+    el.addEventListener("input",function(){
+
+        let angka=this.value.replace(/\D/g,'');
+
+        if(!angka){
+            this.value='';
+            calc();
+            return;
+        }
+
+        this.value=Number(angka).toLocaleString("id-ID");
+
+        calc();
+
+    });
+
+}
+
+/* SAVE LOAD */
+function save(){
+localStorage.setItem("AppDIGI",JSON.stringify(data));
+}
+
+function load(){
+data=JSON.parse(localStorage.getItem("AppDIGI")||"{}");
+}
+
+/* WEEK KEY */
+function weekKey(date){
+let d=new Date(date);
+let day=d.getDay();
+day=day===0?7:day;
+d.setDate(d.getDate()-(day-1));
+return d.getFullYear()+"-"+d.getMonth()+"-"+d.getDate();
+}
+
+/* CALC (REALTIME FIXED) */
+
+function calc(){
+
+let h=0,s=0,a=0;
+let total=0;
+
+let weekly={};
+
+const harianVal=num(harian.value);
+const insentifVal=num(insentif.value);
+
+const currentYear=Number(tahun.value);
+const currentMonth=Number(bulan.value);
+
+Object.entries(data).forEach(([k,v])=>{
+
+    let [y,b,t]=k.split("-").map(Number);
+
+    if(y!==currentYear || b!==currentMonth){
+        return;
+    }
+
+    let d=new Date(y,b,t);
+
+    let w=weekKey(d);
+
+    if(!weekly[w]){
+        weekly[w]={h:0,s:0,a:0};
+    }
+
+    if(v==="masuk"){
+        h++;
+        weekly[w].h++;
+        total+=harianVal;
+    }
+    else if(v==="setengah"){
+        s++;
+        weekly[w].s++;
+        total+=harianVal/2;
+    }
+    else if(v==="alfa"){
+        a++;
+        weekly[w].a++;
+    }
+
+});
+
+let insentifTotal=0;
+
+Object.values(weekly).forEach(w=>{
+
+    if(w.a>0)return;
+
+    let score=w.h+(w.s*0.5);
+
+    if(score>=6){
+        insentifTotal+=insentifVal;
+    }
+
+});
+
+total+=num(pokok.value)+insentifTotal-num(bon.value);
+
+document.getElementById("h").innerText=h;
+document.getElementById("s").innerText=s;
+document.getElementById("a").innerText=a;
+document.getElementById("t").innerText="Rp "+rp(total);
+
+}
+
+/* CALENDAR */
+
+function build(){
+
+let y=+tahun.value;
+let b=+bulan.value;
+
+let max=new Date(y,b+1,0).getDate();
+let start=new Date(y,b,1).getDay();
+start=start===0?6:start-1;
+
+let cal=document.getElementById("cal");
+cal.innerHTML="";
+
+let grid=document.createElement("div");
+grid.className="days";
+
+const hari=["Sen","Sel","Rab","Kam","Jum","Sab","Min"];
+
+hari.forEach(h=>{
+let d=document.createElement("div");
+d.className="headerDay";
+d.innerText=h;
+grid.appendChild(d);
+});
+
+for(let i=0;i<start;i++){
+let e=document.createElement("div");
+e.className="empty";
+grid.appendChild(e);
+}
+
+for(let i=1;i<=max;i++){
+
+let k=key(y,b,i);
+let d=new Date(y,b,i);
+
+let cell=document.createElement("div");
+cell.className="day";
+
+if(data[k])cell.classList.add(data[k]);
+
+cell.innerHTML=`<div>${i}</div><small>${data[k]||""}</small>`;
+
+cell.onclick=()=>{
+
+if(!data[k])data[k]="masuk";
+else if(data[k]==="masuk")data[k]="setengah";
+else if(data[k]==="setengah")data[k]="alfa";
+else delete data[k];
+
+save();
+build();
+calc(); // REALTIME SYNC FIX
+};
+
+grid.appendChild(cell);
+}
+
+cal.appendChild(grid);
+}
+
+/* INPUT CHANGE = FULL SYNC */
+document.querySelectorAll("input,select").forEach(e=>{
+e.addEventListener("input",()=>{save();build();calc();});
+e.addEventListener("change",()=>{save();build();calc();});
+});
+
+/* BACKUP */
+function backup(){
+let b=new Blob([JSON.stringify(data)],{type:"application/json"});
+let a=document.createElement("a");
+a.href=URL.createObjectURL(b);
+a.download="AppDIGI.json";
+a.click();
+}
+
+formatInputRupiah(document.getElementById("pokok"));
+formatInputRupiah(document.getElementById("harian"));
+formatInputRupiah(document.getElementById("insentif"));
+formatInputRupiah(document.getElementById("bon"));
+
+bulan.addEventListener("change",()=>{build();calc();});
+tahun.addEventListener("change",()=>{build();calc();});
+async function downloadJPG(){
+
+    const area=document.querySelector(".container");
+
+    const canvas=await html2canvas(area,{
+        scale:2,
+        useCORS:true
+    });
+
+    const link=document.createElement("a");
+
+    link.download=
+    `${nama.value||"Karyawan"}-${m[bulan.value]}-${tahun.value}.jpg`;
+
+    link.href=
+    canvas.toDataURL("image/jpeg",1);
+
+    link.click();
+
+}
+
+async function downloadPDF(){
+
+    const area=document.querySelector(".container");
+
+    const canvas=await html2canvas(area,{
+        scale:2,
+        useCORS:true
+    });
+
+    const img=
+    canvas.toDataURL("image/jpeg",1);
+
+    const { jsPDF } = window.jspdf;
+
+    const pdf=
+    new jsPDF("p","mm","a4");
+
+    const pdfWidth=190;
+
+    const pdfHeight=
+    (canvas.height*pdfWidth)/canvas.width;
+
+    pdf.addImage(
+        img,
+        "JPEG",
+        10,
+        10,
+        pdfWidth,
+        pdfHeight
+    );
+
+    pdf.save(
+        `${nama.value||"Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`
+    );
+
+}
+/* INIT */
+load();
+
+const now=new Date();
+bulan.value=now.getMonth();
+tahun.value=now.getFullYear();
+
+build();
+calc();
+
+</script>
+
+</body>
+</html>
