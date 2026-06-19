@@ -185,30 +185,58 @@ margin:4px 0;
 
 <!-- INPUT -->
 <div class="card">
-    <div class="grid">
+    <div class="form">
 
-        <input id="nama" placeholder="Nama Karyawan">
-        <input id="pokok" placeholder="Gaji Pokok">
-        <input id="harian" placeholder="Gaji Harian">
-        <input id="insentif" placeholder="Insentif Mingguan">
-        <input id="bon" placeholder="Bon">
+        <div class="field">
+            <label>Nama Karyawan</label>
+            <input id="nama" placeholder="Masukkan nama">
+        </div>
 
-        <!-- LIBUR -->
-        <select id="libur">
-            <option value="minggu">Minggu</option>
-            <option value="sabtu">Sabtu</option>
-            <option value="sabtu-minggu">Sabtu & Minggu</option>
-        </select>
+        <div class="field">
+            <label>Gaji Pokok</label>
+            <input id="pokok" placeholder="Rp">
+        </div>
 
-        <!-- BULAN -->
-        <select id="bulan"></select>
+        <div class="field">
+            <label>Gaji Harian</label>
+            <input id="harian" placeholder="Rp">
+        </div>
 
-        <!-- TAHUN -->
-        <select id="tahun"></select>
+        <div class="field">
+            <label>Insentif Mingguan</label>
+            <input id="insentif" placeholder="Rp">
+        </div>
+
+        <div class="field">
+            <label>Bon</label>
+            <input id="bon" placeholder="Rp">
+        </div>
+
+        <div class="field">
+            <label>Libur</label>
+            <select id="libur">
+                <option value="">Pilih Libur</option>
+                <option value="minggu">Minggu</option>
+                <option value="sabtu">Sabtu</option>
+                <option value="sabtu-minggu">Sabtu & Minggu</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Bulan</label>
+            <select id="bulan">
+                <option value="">Pilih Bulan</option>
+            </select>
+        </div>
+
+        <div class="field">
+            <label>Tahun</label>
+            <select id="tahun">
+                <option value="">Pilih Tahun</option>
+            </select>
+        </div>
 
     </div>
-</div>
-
 </div>
 
 </body>
