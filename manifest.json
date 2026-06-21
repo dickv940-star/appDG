@@ -1,7 +1,8 @@
 {
   "name": "AppDIGI",
   "short_name": "AppDIGI",
-  "start_url": "./",
+  "start_url": "/appDG/",
+  "scope": "/appDG/",
   "display": "standalone",
   "background_color": "#191970",
   "theme_color": "#191970",
