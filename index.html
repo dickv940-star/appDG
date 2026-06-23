@@ -236,20 +236,27 @@ body.dark .header {
     transform: scale(0.97);
   }
 
-  </style>
+#capture-area {
+  width: 100%;
+  background: white;
+}
+
+</style>
+  
 </head>
+  
 <body>
 
-<header class="header">
-  <div class="brand">
-    <div class="logo">
-      <img src="./logo.png" alt="Logo AppDIGI">
-    </div>
-    <h2>AppDIGI</h2>
-  </div>
-</header>
+<div id="capture-area">
 
-<div class="container">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">
+        <img src="./logo.png" alt="Logo AppDIGI">
+      </div>
+      <h2>AppDIGI</h2>
+    </div>
+  </header>
   
 <!-- INPUT -->
 <div class="card">
@@ -300,16 +307,18 @@ body.dark .header {
 <div class="box b">Total <h3 id="t">Rp 0</h3></div>
 </div>
 </div>
+  
   <div class="install-wrapper">
   <button onclick="installApp()" class="btn-install">
     Install App
   </button>
 </div>
+  
 <!-- CALENDAR -->
 <div class="card">
     <div id="cal"></div>
 </div>
-
+  
 <!-- ACTION BUTTONS -->
 <div class="card">
     <div class="action-buttons">
@@ -328,8 +337,6 @@ body.dark .header {
 
     <input type="file" id="file" hidden>
 </div>
-
-    <input type="file" id="file" hidden>
 
 </div>
 
