@@ -188,7 +188,6 @@ body{
 @media (max-width:768px){
   .days{
     grid-template-columns:repeat(2,1fr);
-  }
 }
 
   .btn-danger {
@@ -686,27 +685,26 @@ formatInputRupiah(document.getElementById("bon"));
 
 bulan.addEventListener("change",()=>{build();calc();});
 tahun.addEventListener("change",()=>{build();calc();});
+
 async function downloadJPG() {
+
+    window.scrollTo(0, 0);
+    document.body.style.zoom = "100%";
 
     const area = document.getElementById("capture-area");
 
     const canvas = await html2canvas(area, {
-        scale: window.devicePixelRatio * 3,
+        scale: 4,
         useCORS: true,
-        backgroundColor: "#ffffff",
-        scrollX: 0,
-        scrollY: 0
+        backgroundColor: "#ffffff"
     });
 
     const link = document.createElement("a");
 
-    link.download =
-        `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.jpg`;
-
+    link.download = "report.jpg";
     link.href = canvas.toDataURL("image/jpeg", 1.0);
 
     link.click();
-  
 }
   
 function resetApp(){
@@ -736,51 +734,47 @@ function resetApp(){
 async function downloadPDF() {
 
     await document.fonts.ready;
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise(r => setTimeout(r, 300));
 
     const area = document.getElementById("capture-area");
 
-    // 🔥 SIMPAN SCROLL POSISI
-    const scrollY = window.scrollY;
+    // freeze layout
     const scrollX = window.scrollX;
+    const scrollY = window.scrollY;
 
     window.scrollTo(0, 0);
 
+    area.style.transform = "scale(1)";
+    area.style.transformOrigin = "top left";
+
     const canvas = await html2canvas(area, {
-        scale: 2,
+        scale: 4,   // 🔥 kunci kualitas
         useCORS: true,
+        allowTaint: true,
+        backgroundColor: "#ffffff",
         scrollX: 0,
-        scrollY: -window.scrollY,
-        windowWidth: document.documentElement.offsetWidth,
-        windowHeight: document.documentElement.offsetHeight
+        scrollY: 0,
+        windowWidth: area.scrollWidth,
+        windowHeight: area.scrollHeight
     });
 
     window.scrollTo(scrollX, scrollY);
 
- const canvas = await html2canvas(area, {
-    scale: window.devicePixelRatio * 3,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    scrollX: 0,
-    scrollY: 0
-});
+    const imgData = canvas.toDataURL("image/png", 1.0);
 
-const imgData = canvas.toDataURL("image/png", 1.0);
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
 
-const { jsPDF } = window.jspdf;
-const pdf = new jsPDF("p", "mm", "a4");
+    const imgWidth = 190;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-const pdfWidth = 210;
-const imgWidth = 190;
-const imgHeight = (canvas.height * imgWidth) / canvas.width;
+    pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
 
-pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-
-pdf.save(
-    `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`
-);
-
+    pdf.save(
+        `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`
+    );
 }
+  
 /* INIT */
 load();
 
