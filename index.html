@@ -519,7 +519,7 @@ body {
 <div class="card">
     <div class="action-buttons">
 
-  <button class="btn-dark" onclick="toggleDark()">Dark</button>
+  <button onclick="toggleDark()">Dark Mode</button>
 
   <button class="btn-success" onclick="backup()">Backup</button>
 
@@ -804,9 +804,11 @@ async function downloadJPG() {
     link.href = canvas.toDataURL("image/jpeg", 1.0);
     link.click();
 }
-  function toggleDark(){
+window.toggleDark = function () {
   document.body.classList.toggle("dark");
-}
+  console.log("DARK MODE TOGGLED");
+};
+  
 function resetApp(){
 
 
