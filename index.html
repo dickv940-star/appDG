@@ -303,16 +303,9 @@ body.dark .header {
 }  
   
 #capture-area {
-  width: 100%;
-  padding: 20px;
+  width: 1200px;   
+  margin: auto;
   background: #fff;
-
-  font-family: Arial, sans-serif;
-  color: #000;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: geometricPrecision;
 }
   
 .report-summary,
@@ -688,23 +681,31 @@ tahun.addEventListener("change",()=>{build();calc();});
 
 async function downloadJPG() {
 
-    window.scrollTo(0, 0);
-    document.body.style.zoom = "100%";
-
     const area = document.getElementById("capture-area");
 
+    window.scrollTo(0, 0);
+    document.body.style.zoom = "1";
+
+    area.style.transform = "none";
+
     const canvas = await html2canvas(area, {
-        scale: 4,
+        scale: window.devicePixelRatio * 2,
         useCORS: true,
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: area.scrollWidth,
+        windowHeight: area.scrollHeight,
+        letterRendering: true,
+        imageTimeout: 0,
+        removeContainer: true
     });
 
     const link = document.createElement("a");
-
     link.download = "report.jpg";
     link.href = canvas.toDataURL("image/jpeg", 1.0);
-
     link.click();
+}
 }
   
 function resetApp(){
@@ -734,46 +735,51 @@ function resetApp(){
 async function downloadPDF() {
 
     await document.fonts.ready;
-    await new Promise(r => setTimeout(r, 300));
 
     const area = document.getElementById("capture-area");
 
-    // freeze layout
-    const scrollX = window.scrollX;
-    const scrollY = window.scrollY;
-
     window.scrollTo(0, 0);
-
-    area.style.transform = "scale(1)";
-    area.style.transformOrigin = "top left";
+    document.body.style.zoom = "1";
+    area.style.transform = "none";
 
     const canvas = await html2canvas(area, {
-        scale: 4,   // 🔥 kunci kualitas
+        scale: window.devicePixelRatio * 2,
         useCORS: true,
-        allowTaint: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
         scrollY: 0,
         windowWidth: area.scrollWidth,
-        windowHeight: area.scrollHeight
+        windowHeight: area.scrollHeight,
+        letterRendering: true
     });
 
-    window.scrollTo(scrollX, scrollY);
-
-    const imgData = canvas.toDataURL("image/png", 1.0);
+    const imgData = canvas.toDataURL("image/png");
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
 
     const imgWidth = 190;
+    const pageHeight = 297;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+    let heightLeft = imgHeight;
+    let position = 0;
+
+    pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pageHeight;
+
+    while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+    }
 
     pdf.save(
         `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`
     );
 }
+  
 /* INIT */
 load();
 
