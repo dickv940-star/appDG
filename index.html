@@ -826,18 +826,20 @@ const area = document.getElementById("capture-area");
 /* INIT */
 load();
 
-const now = new Date();
+function initApp(){
+  const now = new Date();
+  bulan.value = now.getMonth();
+  tahun.value = now.getFullYear();
 
-bulan.value = now.getMonth();
-tahun.value = now.getFullYear();
-
-setTimeout(() => {
   build();
   calc();
-}, 50);
-</script>
+}
 
-<script>
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initApp);
+} else {
+  initApp();
+}
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -845,7 +847,6 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('Gagal daftar SW', err));
   });
 }
-</script>
 
 <script>
 let deferredPrompt;
