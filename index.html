@@ -283,7 +283,7 @@ body.dark .header {
 }
 
 .report-title h1{
-  font-size:12Px;
+  font-size:12px;
   letter-spacing:2px;
   text-transform:uppercase;
 }
@@ -295,10 +295,21 @@ body.dark .header {
 }
   
 #capture-area {
-  width: 1200px;   
+  width: 1200px;
+  max-width: 1200px;
   margin: auto;
   background: #fff;
-}  
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: visible;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+  body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  transform: translateZ(0);
+}
   .field input {
   width: 100%;
   min-width: 0;
@@ -317,10 +328,33 @@ body.dark .header {
   overflow: visible;
   min-height: auto;
 }
-  .empty {
-  background: transparent;
-  border: none;
+.empty {
   min-height: 70px;
+  border: none;
+  background: transparent;
+}
+  .days {
+  align-content: start;
+}
+  #capture-area {
+  overflow: visible;
+}
+ .days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 8px;
+  align-items: start;
+  page-break-inside: avoid;
+} 
+ .card,
+.report-summary,
+.salary-box,
+.header {
+  page-break-inside: avoid;
+  break-inside: avoid;
+} 
+  * {
+  box-sizing: border-box;
 }
 </style>
   
@@ -607,8 +641,7 @@ function build(){
 
 let y = Number(tahun.value);
 let b = Number(bulan.value);
-  
-if (!tahun.value || !bulan.value) return;
+
 if (isNaN(y) || isNaN(b)) return;
 
 let max=new Date(y,b+1,0).getDate();
@@ -692,27 +725,25 @@ tahun.addEventListener("change",()=>{build();calc();});
 async function downloadJPG() {
 
     const area = document.getElementById("capture-area");
-  
-area.style.paddingBottom = "60px";
-area.style.overflow = "visible";
-document.body.style.zoom = "1";
-area.style.transform = "none";
+
+    window.scrollTo(0, 0);
+
+    area.style.transform = "scale(1)";
+    area.style.transformOrigin = "top left";
+    area.style.overflow = "visible";
 
     const canvas = await html2canvas(area, {
-        scale: 2,
+        scale: 3,             
         useCORS: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
         scrollY: 0,
         windowWidth: area.scrollWidth,
-        windowHeight: area.scrollHeight,
-        letterRendering: true,
-        imageTimeout: 0,
-        removeContainer: true
+        windowHeight: area.scrollHeight
     });
 
     const link = document.createElement("a");
-    link.download = "report.jpg";
+    link.download = "AppDIGI-report-HD.jpg";
     link.href = canvas.toDataURL("image/jpeg", 1.0);
     link.click();
 }
@@ -754,15 +785,12 @@ const area = document.getElementById("capture-area");
     area.style.transform = "none";
 
     const canvas = await html2canvas(area, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: "#ffffff",
-        scrollX: 0,
-        scrollY: 0,
-        windowWidth: area.scrollWidth,
-        windowHeight: area.scrollHeight,
-        letterRendering: true
-    });
+    scale: 3,
+    useCORS: true,
+    backgroundColor: "#ffffff",
+    windowWidth: area.scrollWidth,
+    windowHeight: area.scrollHeight
+});
 
     const imgData = canvas.toDataURL("image/png");
 
