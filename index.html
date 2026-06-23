@@ -229,6 +229,7 @@ body.dark .header {
       <img src="./logo.png" alt="Logo AppDIGI">
     </div>
     <h2>AppDIGI</h2>
+    <button onclick="installApp()">Install App</button>
   </div>
 </header>
 
@@ -558,51 +559,53 @@ async function downloadJPG(){
 
 async function downloadPDF(){
 
-    const area=document.querySelector(".container");
+    const area = document.querySelector(".container");
 
-    const canvas=await html2canvas(area,{
-        scale:2,
-        useCORS:true
+    const canvas = await html2canvas(area, {
+        scale: 2,
+        useCORS: true
     });
 
-    const img=
-    canvas.toDataURL("image/jpeg",1);
+    const img = canvas.toDataURL("image/jpeg", 1);
 
     const { jsPDF } = window.jspdf;
 
-    const pdf=
-    new jsPDF("p","mm","a4");
+    const pdf = new jsPDF("p","mm","a4");
 
-    const pdfWidth=190;
+    const pdfWidth = 190;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    const pdfHeight=
-    (canvas.height*pdfWidth)/canvas.width;
+    const pageHeight = 297;
+    let heightLeft = pdfHeight;
+    let position = 10;
 
-    pdf.addImage(
-        img,
-        "JPEG",
-        10,
-        10,
-        pdfWidth,
-        pdfHeight
-    );
+    pdf.addImage(img, "JPEG", 10, position, pdfWidth, pdfHeight);
 
-    pdf.save(
-        `${nama.value||"Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`
-    );
+    heightLeft -= pageHeight;
 
+    while (heightLeft > 0) {
+        position = heightLeft - pdfHeight;
+        pdf.addPage();
+        pdf.addImage(img, "JPEG", 10, position, pdfWidth, pdfHeight);
+        heightLeft -= pageHeight;
+    }
+
+    const fileName =
+      `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`;
+
+    pdf.save(fileName);
 }
 /* INIT */
 load();
 
-const now=new Date();
-bulan.value=now.getMonth();
-tahun.value=now.getFullYear();
+const now = new Date();
+bulan.value = now.getMonth();
+tahun.value = now.getFullYear();
 
 build();
 calc();
-
 </script>
+
 <script>
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -612,5 +615,28 @@ if ('serviceWorker' in navigator) {
   });
 }
 </script>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+});
+
+function installApp() {
+  if (!deferredPrompt) {
+    alert("Install belum tersedia, coba refresh halaman");
+    return;
+  }
+
+  deferredPrompt.prompt();
+
+  deferredPrompt.userChoice.then(() => {
+    deferredPrompt = null;
+  });
+}
+</script>
+
 </body>
 </html>
