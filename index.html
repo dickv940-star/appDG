@@ -240,7 +240,10 @@ body.dark .header {
   width: 100%;
   background: white;
 }
-
+  
+#capture-area {
+  padding-top: 10px;
+}
 </style>
   
 </head>
@@ -587,15 +590,27 @@ async function downloadJPG(){
 
 async function downloadPDF() {
 
+    await document.fonts.ready;
     await new Promise(r => setTimeout(r, 500));
 
     const area = document.getElementById("capture-area");
 
+    // 🔥 SIMPAN SCROLL POSISI
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+
+    window.scrollTo(0, 0);
+
     const canvas = await html2canvas(area, {
         scale: 2,
         useCORS: true,
-        scrollY: 0
+        scrollX: 0,
+        scrollY: -window.scrollY,
+        windowWidth: document.documentElement.offsetWidth,
+        windowHeight: document.documentElement.offsetHeight
     });
+
+    window.scrollTo(scrollX, scrollY);
 
     const imgData = canvas.toDataURL("image/jpeg", 1);
 
@@ -625,6 +640,7 @@ async function downloadPDF() {
         `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`;
 
     pdf.save(fileName);
+}
 }
 /* INIT */
 load();
