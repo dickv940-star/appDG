@@ -216,11 +216,28 @@ body.dark textarea {
 body.dark .header {
   background: #0d0d0d;
 }
+ .install-wrapper {
+    text-align: center;
+    margin: 20px 0;
+  }
 
-</style>
+  .btn-install {
+    padding: 10px 16px;
+    border-radius: 12px;
+    background: #191970;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  }
 
+  .btn-install:active {
+    transform: scale(0.97);
+  }
+
+  </style>
 </head>
-
 <body>
 
 <header class="header">
@@ -229,7 +246,6 @@ body.dark .header {
       <img src="./logo.png" alt="Logo AppDIGI">
     </div>
     <h2>AppDIGI</h2>
-    <button onclick="installApp()">Install App</button>
   </div>
 </header>
 
@@ -275,7 +291,6 @@ body.dark .header {
     </div>
 </div>
    
-</body>
 <!-- DASHBOARD -->
 <div class="card">
 <div class="stats">
@@ -285,7 +300,13 @@ body.dark .header {
 <div class="box b">Total <h3 id="t">Rp 0</h3></div>
 </div>
 </div>
-
+  
+<div class="install-wrapper">
+  <button onclick="installApp()" class="btn-install">
+    Install App
+  </button>
+</div>
+  
 <!-- CALENDAR -->
 <div class="card">
     <div id="cal"></div>
