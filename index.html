@@ -500,15 +500,18 @@ let data={};
 const bulan=document.getElementById("bulan");
 const tahun=document.getElementById("tahun");
 
-const rPokok = document.getElementById("rPokok");
-const rBon = document.getElementById("rBon");
-const rTotal = document.getElementById("rTotal");
-  
 const m=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
 
-m.forEach((b,i)=>bulan.innerHTML+=`<option value="${i}">${b}</option>`);
-for(let y=2025;y<=2035;y++)tahun.innerHTML+=`<option>${y}</option>`;
+m.forEach((b,i)=>{
+  bulan.innerHTML += `<option value="${i}">${b}</option>`;
+});
 
+for(let y=2025;y<=2035;y++){
+  tahun.innerHTML += `<option value="${y}">${y}</option>`;
+}
+const now = new Date();
+bulan.value = now.getMonth();
+tahun.value = now.getFullYear();
 /* KEY */
 function key(y,b,t){return y+"-"+b+"-"+t}
 
@@ -639,10 +642,10 @@ document.getElementById("periodeText").innerText =
 
 function build(){
 
+if (tahun.value === "" || bulan.value === "") return;
+
 let y = Number(tahun.value);
 let b = Number(bulan.value);
-
-if (isNaN(y) || isNaN(b)) return;
 
 let max=new Date(y,b+1,0).getDate();
 let start=new Date(y,b,1).getDay();
