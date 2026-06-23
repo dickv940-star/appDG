@@ -239,21 +239,25 @@ body{
 }
 
 /* ===================== FINAL DARK MODE ===================== */
-
 body.dark{
-  background:#121212 !important;
-  color:#ffffff !important;
+  --bg:#121212;
+  --card:#1e1e1e;
+  --text:#ffffff;
+  --border:#444;
 }
-
-/* semua container utama */
-body.dark .card,
-body.dark .report-summary,
-body.dark .salary-box,
-body.dark .legend-box{
-  background:#1e1e1e !important;
-  color:#ffffff !important;
+  body.dark{
+  --bg:#121212;
+  --card:#1e1e1e;
+  --text:#ffffff;
+  --border:#444;
 }
-
+  body{
+  margin:0;
+  font-family:Poppins;
+  background:var(--bg);
+  color:var(--text);
+  padding:20px;
+}
 /* header */
 body.dark .header{
   background:#0d0d0d !important;
