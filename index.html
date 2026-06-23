@@ -339,7 +339,9 @@ body.dark .header {
 </div>
 
 </div>
-
+  
+</body>
+  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -587,55 +589,36 @@ async function downloadPDF() {
 
     await new Promise(r => setTimeout(r, 500));
 
-    const area = document.body;
+    const area = document.getElementById("capture-area");
 
     const canvas = await html2canvas(area, {
         scale: 2,
         useCORS: true,
-        scrollY: -window.scrollY
+        scrollY: 0
     });
+
+    const imgData = canvas.toDataURL("image/jpeg", 1);
 
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
 
-    const pageWidth = 210;
-    const pageHeight = 297;
+    const pdfWidth = 210;
+    const pdfHeight = 297;
 
     const imgWidth = 190;
+    const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let y = 0;
-    const pageHeightPx = (canvas.width * pageHeight) / pageWidth;
+    let heightLeft = imgHeight;
+    let position = 0;
 
-    while (y < canvas.height) {
+    pdf.addImage(imgData, "JPEG", 10, position, imgWidth, imgHeight);
+    heightLeft -= pdfHeight;
 
-        const pageCanvas = document.createElement("canvas");
-        pageCanvas.width = canvas.width;
-        pageCanvas.height = Math.min(pageHeightPx, canvas.height - y);
-
-        const ctx = pageCanvas.getContext("2d");
-
-        ctx.drawImage(
-            canvas,
-            0, y,
-            canvas.width, pageCanvas.height,
-            0, 0,
-            canvas.width, pageCanvas.height
-        );
-
-        const pageImg = pageCanvas.toDataURL("image/jpeg", 1);
-
-        if (y !== 0) pdf.addPage();
-
-        pdf.addImage(
-            pageImg,
-            "JPEG",
-            10,
-            10,
-            imgWidth,
-            (pageCanvas.height * imgWidth) / canvas.width
-        );
-
-        y += pageCanvas.height;
+    while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "JPEG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
     }
 
     const fileName =
