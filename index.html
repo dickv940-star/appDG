@@ -822,12 +822,15 @@ const area = document.getElementById("capture-area");
     );
 }
   
-<script>
 /* INIT */
 load();
 
 function initApp(){
   const now = new Date();
+
+  // pastikan elemen sudah ada
+  if (!bulan || !tahun) return;
+
   bulan.value = now.getMonth();
   tahun.value = now.getFullYear();
 
@@ -840,6 +843,8 @@ if (document.readyState === "loading") {
 } else {
   initApp();
 }
+
+// Service Worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('./sw.js')
@@ -847,8 +852,6 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('Gagal daftar SW', err));
   });
 }
-
-<script>
 let deferredPrompt;
 
 window.addEventListener('beforeinstallprompt', (e) => {
