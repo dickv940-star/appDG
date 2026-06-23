@@ -190,6 +190,20 @@ body{
   .days{
     grid-template-columns:repeat(2,1fr);
   }
+
+  .btn-danger {
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: #dc2626;
+  color: white;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.btn-danger:active {
+  transform: scale(0.97);
 }
   
 /* TAMBAHAN DARK MODE */
@@ -332,7 +346,9 @@ body.dark .header {
         <button class="btn-success" onclick="downloadPDF()">📄 PDF</button>
 
         <button class="btn-primary" onclick="downloadJPG()">🖼️ JPG</button>
-
+      
+        <button class="btn-danger" onclick="resetApp()">🔄 Reset</button>
+      
     </div>
 
     <input type="file" id="file" hidden>
@@ -584,7 +600,24 @@ async function downloadJPG(){
     link.click();
 
 }
+  
+function resetApp(){
 
+    if(!confirm("Reset semua data?")) return;
+
+    data = {};
+
+    document.querySelectorAll("input").forEach(i => i.value = "");
+    document.querySelectorAll("select").forEach(s => s.selectedIndex = 0);
+
+    localStorage.removeItem("AppDIGI");
+
+    build();
+    calc();
+
+    alert("Tampilan berhasil direset");
+}
+  
 async function downloadPDF() {
 
     await document.fonts.ready;
