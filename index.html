@@ -283,14 +283,14 @@ body.dark .header {
 }
 
 .report-title h1{
-  font-size:14px;
-  letter-spacing:1px;
+  font-size:12Px;
+  letter-spacing:2px;
   text-transform:uppercase;
 }
 
 .report-title h2{
   margin:5px 0 0;
-  font-size:13px;
+  font-size:11px;
   color:#666;
 }
 
@@ -701,13 +701,8 @@ area.style.overflow = "visible";
 document.body.style.zoom = "1";
 area.style.transform = "none";
 
-    window.scrollTo(0, 0);
-    document.body.style.zoom = "1";
-
-    area.style.transform = "none";
-
     const canvas = await html2canvas(area, {
-        scale: 2
+        scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
@@ -752,18 +747,17 @@ function resetApp(){
 async function downloadPDF() {
 
     await document.fonts.ready;
-
-    const area = document.getElementById("capture-area");
   
 const area = document.getElementById("capture-area");
-area.style.paddingBottom = "60px";
-area.style.overflow = "visible";
+  
+    area.style.paddingBottom = "60px";
+    area.style.overflow = "visible";
     window.scrollTo(0, 0);
     document.body.style.zoom = "1";
     area.style.transform = "none";
 
     const canvas = await html2canvas(area, {
-        scale: 2
+        scale: 2,
         useCORS: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
