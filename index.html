@@ -130,7 +130,7 @@ body{
 /* ===================== CALENDAR ===================== */
 .days{
   display:grid;
-  grid-template-columns:repeat(7,1fr);
+  grid-template-columns:repeat(7, minmax(0, 1fr));
   gap:8px;
   margin-top:12px;
 }
@@ -293,15 +293,6 @@ body.dark .header {
   font-size:11px;
   color:#666;
 }
-
-.report-summary{
-  page-break-inside:avoid;
-}
-
-.card{
-  page-break-inside:avoid;
-  
-}  
   
 #capture-area {
   width: 1200px;   
@@ -325,6 +316,11 @@ body.dark .header {
 .card {
   overflow: visible;
   min-height: auto;
+}
+  .empty {
+  background: transparent;
+  border: none;
+  min-height: 70px;
 }
 </style>
   
@@ -612,6 +608,7 @@ function build(){
 let y = Number(tahun.value);
 let b = Number(bulan.value);
   
+if (!tahun.value || !bulan.value) return;
 if (isNaN(y) || isNaN(b)) return;
 
 let max=new Date(y,b+1,0).getDate();
@@ -794,6 +791,7 @@ const area = document.getElementById("capture-area");
     );
 }
   
+<script>
 /* INIT */
 load();
 
@@ -802,7 +800,6 @@ const now = new Date();
 bulan.value = now.getMonth();
 tahun.value = now.getFullYear();
 
-// penting: paksa update UI dulu
 setTimeout(() => {
   build();
   calc();
