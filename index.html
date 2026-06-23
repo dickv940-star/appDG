@@ -283,14 +283,14 @@ body.dark .header {
 }
 
 .report-title h1{
-  font-size:16px;
+  font-size:14px;
   letter-spacing:1px;
   text-transform:uppercase;
 }
 
 .report-title h2{
   margin:5px 0 0;
-  font-size:16px;
+  font-size:13px;
   color:#666;
 }
 
@@ -307,8 +307,18 @@ body.dark .header {
   width: 1200px;   
   margin: auto;
   background: #fff;
+}  
+  .field input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  font-size: 14px;
 }
-  
+.field input {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}  
 .report-summary,
 .legend-box,
 .salary-box,
@@ -685,6 +695,11 @@ tahun.addEventListener("change",()=>{build();calc();});
 async function downloadJPG() {
 
     const area = document.getElementById("capture-area");
+  
+area.style.paddingBottom = "60px";
+area.style.overflow = "visible";
+document.body.style.zoom = "1";
+area.style.transform = "none";
 
     window.scrollTo(0, 0);
     document.body.style.zoom = "1";
@@ -692,7 +707,7 @@ async function downloadJPG() {
     area.style.transform = "none";
 
     const canvas = await html2canvas(area, {
-        scale: window.devicePixelRatio * 2,
+        scale: 2
         useCORS: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
@@ -739,13 +754,16 @@ async function downloadPDF() {
     await document.fonts.ready;
 
     const area = document.getElementById("capture-area");
-
+  
+const area = document.getElementById("capture-area");
+area.style.paddingBottom = "60px";
+area.style.overflow = "visible";
     window.scrollTo(0, 0);
     document.body.style.zoom = "1";
     area.style.transform = "none";
 
     const canvas = await html2canvas(area, {
-        scale: window.devicePixelRatio * 2,
+        scale: 2
         useCORS: true,
         backgroundColor: "#ffffff",
         scrollX: 0,
