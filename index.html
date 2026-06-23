@@ -127,49 +127,81 @@ body{
 .r{background:var(--danger)}
 .b{background:var(--primary)}
 
-/* ===================== CALENDAR ===================== */
+/* ===================== CALENDAR FINAL FIX ===================== */
+
 .days{
-  display:grid;
-  grid-template-columns:repeat(7, minmax(0, 1fr));
-  gap:8px;
-  margin-top:12px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  align-items: stretch;
 }
 
 .headerDay{
-  background:var(--primary);
-  color:#fff;
-  padding:10px;
-  text-align:center;
-  border-radius:10px;
-  font-size:12px;
-  font-weight:600;
+  background: var(--primary);
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
 }
 
 .day{
-  border:1px solid var(--border);
-  padding:10px;
-  border-radius:12px;
-  min-height:70px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  font-weight:600;
-  cursor:pointer;
-  transition:.15s;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+
+  min-height: 75px;
+  padding: 8px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;   /* FIX: tidak center biar rapi */
+  align-items: center;
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: .15s;
+
+  box-sizing: border-box;
+
+  overflow: hidden;  /* FIX: biar tidak pecah keluar box */
 }
 
 .day:hover{
-  transform:translateY(-2px);
-  box-shadow:0 6px 15px rgba(0,0,0,.08);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,.08);
+}
+
+.day div{
+  font-size: 14px;
+  line-height: 1.2;
 }
 
 .day small{
-  font-size:11px;
-  opacity:.7;
-  margin-top:3px;
+  font-size: 10px;
+  opacity: .8;
+
+  text-align: center;
+  width: 100%;
+
+  word-break: break-word;
+  white-space: normal;
 }
 
+/* empty cell kalender */
+.empty{
+  min-height: 75px;
+  border: none;
+  background: transparent;
+}
+
+/* mobile fix */
+@media (max-width:768px){
+  .days{
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+  
 /* STATUS */
 .masuk{background:#16a34a;color:#fff}
 .setengah{background:#facc15;color:#111}
@@ -296,31 +328,34 @@ body.dark .header {
   
 #capture-area {
   width: 1200px;
-  max-width: 1200px;
+  max-width: 100%;
   margin: auto;
   background: #fff;
   padding: 20px;
   box-sizing: border-box;
+
   overflow: visible;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-  body {
+
+body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   transform: translateZ(0);
 }
-  .field input {
+
+/* FIX INPUT (INI PENTING) */
+.field input {
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
   font-size: 14px;
+
+  overflow: visible;        /* FIX */
+  text-overflow: unset;     /* FIX */
+  white-space: normal;      /* FIX */
 }
-.field input {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}  
+
+/* BOX & CARD AMAN */
 .report-summary,
 .legend-box,
 .salary-box,
@@ -328,33 +363,27 @@ body.dark .header {
   overflow: visible;
   min-height: auto;
 }
+
+/* EMPTY CELL CALENDAR */
 .empty {
   min-height: 70px;
   border: none;
   background: transparent;
 }
-  .days {
-  align-content: start;
-}
-  #capture-area {
-  overflow: visible;
-}
- .days {
-  display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
-  gap: 8px;
-  align-items: start;
-  page-break-inside: avoid;
-} 
- .card,
+
+/* PRINT SAFE */
+.card,
 .report-summary,
 .salary-box,
 .header {
   page-break-inside: avoid;
   break-inside: avoid;
-} 
-  * {
-  box-sizing: border-box;
+}
+
+/* TEXT DAY CALENDAR */
+.day div{
+  font-size: 14px;
+  line-height: 1.2;
 }
 </style>
   
