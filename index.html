@@ -580,11 +580,15 @@ async function downloadJPG(){
 
 async function downloadPDF() {
 
-    const area = document.querySelector(".container");
+    // 🔥 penting: tunggu render
+    await new Promise(r => setTimeout(r, 500));
+
+    const area = document.body;
 
     const canvas = await html2canvas(area, {
         scale: 2,
-        useCORS: true
+        useCORS: true,
+        scrollY: -window.scrollY
     });
 
     const imgData = canvas.toDataURL("image/jpeg", 1);
@@ -598,18 +602,14 @@ async function downloadPDF() {
     const imgWidth = 190;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-    let heightLeft = imgHeight;
-    let position = 0;
-
-    let pageCanvasHeight = (canvas.width * pageHeight) / pageWidth;
-
     let y = 0;
+    let pageHeightPx = (canvas.width * pageHeight) / pageWidth;
 
     while (y < canvas.height) {
 
         const pageCanvas = document.createElement("canvas");
         pageCanvas.width = canvas.width;
-        pageCanvas.height = Math.min(pageCanvasHeight, canvas.height - y);
+        pageCanvas.height = Math.min(pageHeightPx, canvas.height - y);
 
         const ctx = pageCanvas.getContext("2d");
 
@@ -645,6 +645,7 @@ async function downloadPDF() {
         `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`;
 
     pdf.save(fileName);
+}
 }
 /* INIT */
 load();
