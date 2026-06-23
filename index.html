@@ -599,8 +599,10 @@ document.getElementById("periodeText").innerText =
 
 function build(){
 
-let y=+tahun.value;
-let b=+bulan.value;
+let y = Number(tahun.value);
+let b = Number(bulan.value);
+  
+if (isNaN(y) || isNaN(b)) return;
 
 let max=new Date(y,b+1,0).getDate();
 let start=new Date(y,b,1).getDay();
@@ -707,7 +709,6 @@ async function downloadJPG() {
     link.href = canvas.toDataURL("image/jpeg", 1.0);
     link.click();
 }
-}
   
 function resetApp(){
 
@@ -785,11 +786,15 @@ async function downloadPDF() {
 load();
 
 const now = new Date();
+
 bulan.value = now.getMonth();
 tahun.value = now.getFullYear();
 
-build();
-calc();
+// penting: paksa update UI dulu
+setTimeout(() => {
+  build();
+  calc();
+}, 50);
 </script>
 
 <script>
