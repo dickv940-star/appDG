@@ -578,7 +578,7 @@ async function downloadJPG(){
 
 }
 
-async function downloadPDF(){
+async function downloadPDF() {
 
     const area = document.querySelector(".container");
 
@@ -590,32 +590,61 @@ async function downloadPDF(){
     const imgData = canvas.toDataURL("image/jpeg", 1);
 
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF("p","mm","a4");
+    const pdf = new jsPDF("p", "mm", "a4");
 
-    const pageWidth = 210;   // A4 width
-    const pageHeight = 297;  // A4 height
+    const pageWidth = 210;
+    const pageHeight = 297;
 
     const imgWidth = 190;
     const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
     let heightLeft = imgHeight;
-    let position = 10;
+    let position = 0;
 
-    pdf.addImage(imgData, "JPEG", 10, position, imgWidth, imgHeight);
-    heightLeft -= pageHeight;
+    let pageCanvasHeight = (canvas.width * pageHeight) / pageWidth;
 
-    while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "JPEG", 10, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+    let y = 0;
+
+    while (y < canvas.height) {
+
+        const pageCanvas = document.createElement("canvas");
+        pageCanvas.width = canvas.width;
+        pageCanvas.height = Math.min(pageCanvasHeight, canvas.height - y);
+
+        const ctx = pageCanvas.getContext("2d");
+
+        ctx.drawImage(
+            canvas,
+            0,
+            y,
+            canvas.width,
+            pageCanvas.height,
+            0,
+            0,
+            canvas.width,
+            pageCanvas.height
+        );
+
+        const pageImg = pageCanvas.toDataURL("image/jpeg", 1);
+
+        if (y !== 0) pdf.addPage();
+
+        pdf.addImage(
+            pageImg,
+            "JPEG",
+            10,
+            10,
+            imgWidth,
+            (pageCanvas.height * imgWidth) / canvas.width
+        );
+
+        y += pageCanvas.height;
     }
 
     const fileName =
-      `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`;
+        `${nama.value || "Karyawan"}-${m[bulan.value]}-${tahun.value}.pdf`;
 
     pdf.save(fileName);
-}
 }
 /* INIT */
 load();
